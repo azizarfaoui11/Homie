@@ -23,8 +23,10 @@ export interface IUser extends Document {
 
   followers: Types.ObjectId[];
   following: Types.ObjectId[];
-  occupation?: string; // Profession ou poste actuel
+  occupation?: string; 
   hobbies?: string[];
+  friends: Types.ObjectId[];
+
 
   lastSeen?: Date;
   isOnline?: boolean;
@@ -57,6 +59,8 @@ const userSchema = new Schema<IUser>({
 
 occupation: { type: String },
 hobbies: [{ type: String }],
+friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+
 
   lastSeen: { type: Date },
   isOnline: { type: Boolean, default: false },

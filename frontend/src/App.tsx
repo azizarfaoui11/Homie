@@ -12,7 +12,6 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import ChatPage from "./pages/chat";
 import UsersListPage from "./pages/UsersListPage";
-import UserProfile from "./pages/userprofil";
 import Profile from "./pages/Profile";
 import CreateEvent from "./pages/CreateEvent";
 import EventsList from "./pages/EventList";
@@ -20,9 +19,11 @@ import EventPage from "./pages/EventPages";
 import RegisterStep1 from "./pages/RegisterStep1";
 import RegisterStep2 from "./pages/RegisterStep2";
 import Gallery from "./pages/Gallery";
-import FollowButton from "./components/FollowButton";
-import AllUsers from "./pages/allusers";
 import SuggestedUsers from "./pages/SuggestedUsers";
+import VoirProfile from "./pages/VoirProfile";
+import FollowRelationsModal from "./components/FollowRelationsModal";
+import VideoUploader from "./pages/VideoUploader";
+import VideoFeed from "./pages/videos";
 
 const queryClient = new QueryClient();
 
@@ -40,15 +41,24 @@ const AnimatedRoutes = () => {
         <Route path="/register-step2" element={<RegisterStep2 />} />
         <Route path="/home" element={<Home />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/profil" element={<UserProfile />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/events" element={<EventsList />} />
         <Route path="/createevent" element={<CreateEvent />} />
         <Route path="/event/:id" element={<EventPage />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/allusers" element={<AllUsers />} />
         <Route path="/suggested" element={<SuggestedUsers />} />
+        <Route path="/voirprofile/:id" element={<VoirProfile />} />
+        <Route path="/uploadvideo" element={<VideoUploader />} />
+         <Route path="/allvideos" element={<VideoFeed />} />
+
+
+        
+        
+
+
+
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </AnimatePresence>
   );

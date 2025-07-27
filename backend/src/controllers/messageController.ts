@@ -1,6 +1,7 @@
 import { AuthRequest } from '../middlewares/auth';
 import {Message} from '../models/message';
 import { Request, Response } from 'express';
+import { Notification } from '../models/Notification';
 
 export const sendMessage = async (req: Request, res: Response) => {
   const { sender, receiver, content } = req.body;
@@ -12,6 +13,12 @@ export const sendMessage = async (req: Request, res: Response) => {
     }*/
   try {
     const message = await Message.create({ sender, receiver, content });
+     const notif = new Notification({
+          recipient: receiver, // on récupère l’auteur du post depuis la BDD
+          sender: sender,
+          type: 'message',
+        });
+        await notif.save();
     res.status(201).json(message);
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de l\'envoi du message' });

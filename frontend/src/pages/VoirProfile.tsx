@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,19 +33,16 @@ import {
 } from "lucide-react";
 import { api } from "@/services/api";
 import CommentSection from "@/components/commentsection";
-import Modal from '@/components/Modal';
-import EditProfile from './EditProfile';
+import FollowButton from "@/components/FollowButton";
 import SearchModal from "@/components/SearchModal";
 
 
 
-const Profile = () => {
+const VoirProfile = () => {
   const [activeTab, setActiveTab] = useState("post");
   
   const [profile, setProfile] = useState<any>(null);
   const [posts, setPosts] = useState<any[]>([]);
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
-
  
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
@@ -61,6 +58,9 @@ const Profile = () => {
   const [postImages, setPostImages] = useState<string[]>([]);
     
     const [friends, setFriends] = useState<any>([]);
+    const { id } = useParams(); // récupère le userId depuis l'URL
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
 
 
 
@@ -81,11 +81,10 @@ const handleCloseModal = () => {
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const profilres = await api.getuserprofil();
+        const profilres = await api.getUserById(id);
         setProfile(profilres.data);
-         const token = localStorage.getItem('token');
-        if (token) {
-          const postsRes = await api.fetchMyPosts(token);
+        if (id) {
+          const postsRes = await api.fetchPostByuser(id);
           const userId = profilres.data._id;
 const enrichedPosts = postsRes.map((post) => ({
   ...post,
@@ -94,7 +93,7 @@ const enrichedPosts = postsRes.map((post) => ({
 }));
 
 setPosts(enrichedPosts);
-        }
+}
       } catch (err) {
         console.error('Erreur chargement profil', err);
       }
@@ -115,13 +114,8 @@ useEffect(() => {
     fetchFriends();
   }, []);
 
-  const handleAddFriend = () => {
-    alert("Friend request sent!");
-  };
-
-    const handleEditProfile = () => {
-    navigate(`/edit-profile/${profile._id}`); 
-  };
+  
+   
 
  
   const handleLikeClick = async (postId: string) => {
@@ -151,34 +145,6 @@ const handleShareClick = () => {
   };
 
 
-const handleAddPost = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  try {
-    const formData = new FormData();
-    formData.append('content', newPostContent.content);
-    if (newPostContent.image) {
-      formData.append('image', newPostContent.image);
-    }
-
-    await api.addpost(formData); // ⚠️ modifie aussi `api.addpost` (voir ci-dessous)
-
-    setNewPostContent({
-      content: '',
-      image: null,
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
-
- const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setNewPostContent((prev) => ({
-    ...prev,
-    content: e.target.value,
-  }));
-};
-
 const handleLogout = async () => {
   try {
     await api.logout();
@@ -192,7 +158,7 @@ const handleLogout = async () => {
 useEffect(() => {
       const getImages = async () => {
         try {
-          const { images } = await api.fetchMyImages(token);
+          const { images } = await api.fetchImagesByuser(id);
           setPostImages(images || []);
         } catch (err) {
           console.error('Erreur récupération images :', err);
@@ -240,7 +206,7 @@ useEffect(() => {
           <button className="hover:text-blue-600 transition-colors">
             <Video className="w-6 h-6" />
           </button>
-            <button
+             <button
               className="hover:text-blue-600 transition-colors"
               onClick={() => setIsSearchOpen(true)}
             >
@@ -298,17 +264,9 @@ useEffect(() => {
                
             </div>
 
-            <div className="flex gap-3 ml-12" >
+            <div className="flex gap-3 ml-12">
+            <FollowButton targetId={profile._id} currentUserId={""}  />
 
-      <Button onClick={() => setOpenModal(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-6">
-        ✉ Modifier le profil
-      </Button>
-
-      <Modal isOpen={openModal} onClose={handleCloseModal}>
-  <EditProfile onClose={handleCloseModal} />
-</Modal>
-
-    
               <Button variant="outline" size="icon">
                 <MoreHorizontal className="w-4 h-4" />
               </Button>
@@ -482,89 +440,11 @@ useEffect(() => {
 
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Create Post */}
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                 <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
-<img
-            src={profile.avatar ? `http://localhost:5000/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
-            alt="Cover"
-          />               
-              </Avatar>
-                
-                 <Input
-        type="text"
-        placeholder="What's on your mind?"
-        value={newPostContent.content}
-        onChange={handleChange}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            handleAddPost(e);
-          }
-        }}
-        className="flex-1 bg-gray-100 rounded-full px-4 py-2 text-gray-700 focus:ring-blue-500 focus:border-blue-500 border-none"
-      />
+          
 
-      {/* Icône d'ajout d'image */}
-      <div className="relative">
-        <label htmlFor="file-upload" className="cursor-pointer text-gray-500 hover:text-blue-600">
-          <ImageIcon className="w-5 h-5" />
-        </label>
-        <input
-          id="file-upload"
-          type="file"
-          accept="image/*"
-          onChange={(e) =>
-            setNewPostContent((prev) => ({
-              ...prev,
-              image: e.target.files?.[0] || null,
-            }))
-          }
-          className="hidden"
-        />
-      </div>
 
-      <Button
-        onClick={handleAddPost}
-        className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-4 py-2 ml-2"
-      >
-        Publier
-      </Button>
-                
-              </div>
-              <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => alert("Live video feature coming soon!")}
-                    className="flex items-center gap-2 text-gray-600 hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors"
-                  >
-                    <span className="text-red-500">🎥</span> Live video
-                  </button>
-                  <label className="flex items-center gap-2 text-gray-600 hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors cursor-pointer">
-                    <span className="text-green-500">📸</span> Photo/Video
-                    <input
-                      type="file"
-                      accept="image/*,video/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          alert(`Selected file: ${file.name}`);
-                        }
-                      }}
-                    />
-                  </label>
-                  <button
-                    onClick={() => alert("Life event feature coming soon!")}
-                    className="flex items-center gap-2 text-gray-600 hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors"
-                  >
-                    <span className="text-yellow-500">😊</span> Life event
-                  </button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+
+
 
           {/* Post */}
           {posts.map((post) => (
@@ -708,13 +588,12 @@ useEffect(() => {
           ))}
         </div>
       </div>
-              <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+                    <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
     </div>
-
   );
 };
 
 
 
-export default Profile;
+export default VoirProfile;

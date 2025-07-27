@@ -14,6 +14,8 @@ import commentsRoutes from "./routes/commentsRoutes";
 import userRoutes from "./routes/userRoutes";
 import eventRoutes from "./routes/eventRoutes";
 import chatRoutes from "./routes/chatRoutes";
+import notificationsRoutes from "./routes/notificationsRoutes";
+import videoRoutes from "./routes/videoRoutes";
 
 dotenv.config();
 
@@ -38,6 +40,10 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use("/api/user",userRoutes);
 app.use("/api/events",eventRoutes);
 app.use("/api/chat",chatRoutes);
+app.use('/api/notifications', notificationsRoutes);
+app.use('/api/videos', videoRoutes);
+
+
 
 
 

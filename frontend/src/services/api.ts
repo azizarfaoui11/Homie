@@ -47,8 +47,16 @@ export interface Post{
 
 export interface   comment {
   postId: string;
+ // videoId: string;
   content: string;
 }
+
+export interface   commentt {
+ // postId: string;
+  videoId: string;
+  content: string;
+}
+
 
 export interface event{
       _id: any;
@@ -167,7 +175,7 @@ likeComment: (commentId: string) =>{
 },
 
 replyToComment: (data: { parentCommentId: string; content: string; postId: string }) =>{
-    axios.post(`${API_URL}/comments/reply`, data)
+   return axios.post(`${API_URL}/comments/reply`, data)
 
 },
 
@@ -238,14 +246,83 @@ getFollowers: (id: string) =>
 getFollowing: (id: string) =>
   axios.get(`${API_URL}/user/following/${id}`),
 
-checkIsFollowing: (id: string) =>
-  axios.get(`${API_URL}/user/isFollowing/${id}`
-    ),
-
+checkFollowStatus: async (targetId: string) => {
+  return axios.get(`${API_URL}/user/follow/status/${targetId}`);
+}
+,
     suggestions:async () =>{
   return axios.get(`${API_URL}/user/suggestions`);
 
     },
+
+fetchPostByuser : async (id: string) => {
+  const response = await axios.get(`${API_URL}/posts/${id}`);
+  return response.data;
+},
+
+fetchImagesByuser : async (id:string) => {
+  const res = await axios.get(`${API_URL}/posts/imagebyprofil/${id}`);
+  return res.data;
+},
+
+getNotifications: async () => {
+  return axios.get(`${API_URL}/notifications/all`);
+},
+
+markNotificationAsRead: async (id: string) => {
+  return axios.put(`${API_URL}/notifications/${id}/read`, {}
+);
+},
+
+getNotifCount: async () =>
+  
+  {
+return axios.get(`${API_URL}/notifications/count`);
+  }
+,
+  deleteNotif: async (id: string) => {
+    return axios.delete(`${API_URL}/notifications/delete/${id}`);
+  },
+
+getfriends: async () =>{
+ return axios.get(`${API_URL}/user/friends`);
+
+},
+
+  uploadVideo : async (formData: FormData) => {
+  const res = await axios.post(`${API_URL}/videos/upload`, formData);
+  return res.data;
+},
+
+ /*fetchAllVideos : async () => {
+  const res = await axios.get(`${API_URL}videos/all`);
+  return res.data;
+},*/
+
+  fetchAllVideos : async (page = 1, limit = 5) => {
+  const res = await axios.get(`${API_URL}/videos/all?page=${page}&limit=${limit}`);
+  return res.data;
+},
+
+likeVideo: async (videoId: string) =>{
+   return axios.post(`${API_URL}/videos/${videoId}/like`);
+
+},
+
+  unlikeVideo: async (videoId: string) =>
+  {
+    return axios.post(`${API_URL}/videos/${videoId}/unlike`);
+
+  },
+
+getCommentsForVideo: async (videoId: string) => {
+    return  await axios.get(`${API_URL}/comments/video/${videoId}`);
+     
+  },
+
+  addCommentToVideo: async (data:commentt) => {
+   return await axios.post(`${API_URL}/comments/video`,data);
+  },
 
 
 

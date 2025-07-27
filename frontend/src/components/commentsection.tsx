@@ -45,7 +45,9 @@ export default function CommentSection({ postId }: CommentSectionProps) {
         content: commentText,
       });
 
-      setComments((prev) => [...prev, response.data]);
+     // setComments((prev) => [...prev, response.data]);
+     const refreshed = await api.fetchcommentbypost(postId);
+     setComments(refreshed.data);
       setCommentText('');
     } catch (error) {
       console.error('Erreur ajout commentaire', error);
@@ -74,24 +76,36 @@ export default function CommentSection({ postId }: CommentSectionProps) {
 
 
   const handleReplyComment = async (parentCommentId: string, replyText: string) => {
-    if (!replyText.trim()) return;
+  if (!replyText.trim()) return;
 
-    try {
-      await api.replyToComment({
-        parentCommentId,
-        content: replyText,
-        postId,
-      });
+  try {
+    const response = await api.replyToComment({
+      parentCommentId,
+      content: replyText,
+      postId,
+    });
 
-      setReplyText('');
-      setReplyingTo(null);
+    const newReply = response.data;
 
-      const refreshed = await api.fetchcommentbypost(postId);
-      setComments(refreshed.data);
-    } catch (err) {
-      console.error('Erreur réponse', err);
-    }
-  };
+    setReplyText('');
+    setReplyingTo(null);
+
+    // 🔁 Mettre à jour localement la réponse dans le bon commentaire
+    setComments(prevComments =>
+      prevComments.map(comment =>
+        comment._id === parentCommentId
+          ? {
+              ...comment,
+              replies: [...(comment.replies || []), newReply],
+            }
+          : comment
+      )
+    );
+  } catch (err) {
+    console.error('Erreur réponse', err);
+  }
+};
+
 
   const renderReplies = (replies: any[]) => {
     return replies.map((reply) => (

@@ -40,8 +40,8 @@ export default function ChatPage({ recipientId }) {
       socket.off('receiveMessage');
     };
   }, [currentUserId, recipientId]);
-*/
- /* useEffect(() => {
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -54,23 +54,24 @@ export default function ChatPage({ recipientId }) {
     };
     await api.SendMessage(msg);
     socket.emit('sendMessage', msg);
-    setMessages((prev) => [...prev, msg]);
+    //setMessages((prev) => [...prev, msg]);
     setMessage('');
   };
+
+
 */
-const handleSend= async()=>
-{
+const handleSend=()=>{
 
 }
 
-  /*useEffect(() => {
+  useEffect(() => {
   if (!recipientId) return;
 
   api.getUserById(recipientId).then((res) => {
     setRecipient(res.data);
   });
 }, [recipientId]);
-*/
+
   return (
     <div className="p-3">
       <Card className="rounded-2xl shadow-lg p-4 bg-white border border-gray-200">

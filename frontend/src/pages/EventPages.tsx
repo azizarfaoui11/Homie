@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../services/api';
 import { event } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function EventPage() {
   const { id } = useParams();
   const [event, setEvent] = useState<event | null>(null);
+const navigate= useNavigate();
 
   useEffect(() => {
     const fetch = async () => {
@@ -21,12 +23,16 @@ export default function EventPage() {
 
   const handleJoin = async () => {
     await api.joinEvent(id!);
-    location.reload();
+    //location.reload();
+   navigate('/home');
   };
 
   const handleLeave = async () => {
     await api.leaveEvent(id!);
-    location.reload();
+       navigate('/home');
+
+  //  location.reload();
+
   };
 
   if (!event) return <p className="text-center mt-10 text-gray-500">Chargement...</p>;

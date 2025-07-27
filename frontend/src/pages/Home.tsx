@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input"; 
 import UsersListPage from '../pages/UsersListPage';
-import { Image as ImageIcon, Plus, PlusCircle } from 'lucide-react';
+import { Heart, Image as ImageIcon, MessageCircle, Plus, PlusCircle, Search, UserMinus, UserPlus } from 'lucide-react';
 import {Home as HomeIcon,Users, Video, Store, Bell, MessageSquare, LogOut,Share,ThumbsUp } from 'lucide-react';
 import ModalShare from "@/components/ModalShare";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,6 +14,9 @@ import { api } from "../services/api";
 import CommentSection from "@/components/commentsection";
 import Geminimodal from "@/components/geminimodal";
 import CreateEventModal from "@/components/CreateEventModal";
+import SearchModal from "../components/SearchModal";
+import FollowRelationsModal from "@/components/FollowRelationsModal";
+
 
 const Home = () => {
 
@@ -30,10 +33,23 @@ content:'',
   const [posts,setposts]=useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSuggestOpen, setIsSuggestOpen] = useState(false);
+
+
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifCount, setNotifCount] = useState(0);
+
+
+
 
 const[event,setevent]=useState<any[]>([]);
   
+
+
+ 
 
 
 
@@ -92,6 +108,31 @@ setevent(eventlist);
 useEffect(() => {
     fetchdata();
   }, []);
+
+
+useEffect(() => {
+  const fetchNotifications = async () => {
+    try {
+      const res = await api.getNotifications();
+      console.log("🔔 Notifications reçues:", res.data);
+      
+      if (Array.isArray(res.data.notifications)) {
+        setNotifications(res.data.notifications);
+      } else {
+        setNotifications([]);
+      }
+    } catch (error) {
+      console.error("❌ Erreur chargement notifications:", error);
+      setNotifications([]);
+    }
+  };
+
+  if (isNotificationsOpen) {
+    fetchNotifications();
+  }
+}, [isNotificationsOpen]);
+
+
 
 
 
@@ -156,6 +197,37 @@ const handleLogout = async () => {
   }
 };
 
+useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const res = await api.getNotifCount();
+        setNotifCount(res.data.count);
+      } catch (err) {
+        console.error("Erreur fetch notif count :", err);
+      }
+    };
+
+    fetchCount();
+
+    // Re-fetch toutes les 30 secondes par exemple (narjaalha fel video)       *******importatnt***********
+   // const interval = setInterval(fetchCount, 5000);
+   // return () => clearInterval(interval);
+  }, []);
+
+
+const handleDeleteNotification = async (id: string) => {
+  try {
+    await api.deleteNotif(id);
+    // Supprimer la notif du state local :
+    setNotifications((prev) => prev.filter((notif) => notif._id !== id));
+  } catch (err) {
+    console.error("Erreur suppression notification :", err);
+  }
+};
+
+
+
+
  if (!profile) {
     return <div className="text-center mt-10 text-gray-500">Chargement du profil...</div>;
   }
@@ -178,7 +250,10 @@ const handleLogout = async () => {
                     >
                       Profile
                     </Link>
+
+               
          </div>
+        
         
         
 
@@ -190,25 +265,39 @@ const handleLogout = async () => {
 >
   <HomeIcon className="w-6 h-6" />
 </button>
-          <button className="hover:text-blue-600 transition-colors">
+
+ 
+          <button className="hover:text-blue-600 transition-colors"
+                        onClick={() => setIsSuggestOpen(true)}
+>
             <Users className="w-6 h-6" />
           </button>
           <button className="hover:text-blue-600 transition-colors">
             <Video className="w-6 h-6" />
           </button>
-          <button className="hover:text-blue-600 transition-colors">
-            <Store className="w-6 h-6" />
-          </button>
+                <button
+              className="hover:text-blue-600 transition-colors"
+              onClick={() => setIsSearchOpen(true)}
+            >
+              <Search className="w-5 h-5" />
+            </button>
         </nav>
 
         {/* Actions à droite */}
         <div className="flex items-center space-x-4">
-          <button className="hover:text-blue-600 transition-colors">
-            <MessageSquare className="w-5 h-5" />
-          </button>
-          <button className="hover:text-blue-600 transition-colors">
-            <Bell className="w-5 h-5" />
-          </button>
+          
+          <button
+  className="hover:text-blue-600 transition-colors relative"
+  onClick={() => setIsNotificationsOpen(true)}
+>
+  <Bell className="w-6 h-6" />
+  {notifCount > 0 && (
+        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5 leading-none">
+          {notifCount}
+        </span>
+      )}
+</button>
+
           <button
             onClick={handleLogout}
             className="flex items-center space-x-1 text-gray-600 hover:text-red-500 transition-colors"
@@ -218,6 +307,7 @@ const handleLogout = async () => {
           </button>
         </div>
       </div>
+       
     </header>
   
 
@@ -247,18 +337,13 @@ const handleLogout = async () => {
 
               {/* Navigation */}
               <div className="flex gap-4 text-sm border-b pb-2 mb-4 overflow-x-auto whitespace-nowrap"> {/* Added overflow and whitespace */}
-                <button
-                  className="border-b-2 border-blue-600 text-blue-600 pb-2 font-medium"
-                  onClick={() => handleNavigationClick("Página inicial")}
-                >
+                <a
+                  className="border-b-2 border-blue-600 text-blue-600 pb-2 font-medium ml-5"
+                   href="/allvideos"
+                   >                
                   Videos
-                </button>
-                <button
-                  className="text-gray-600 hover:text-blue-600 pb-2 transition-colors"
-                  onClick={() => handleNavigationClick("Créditos")}
-                >
-                  Stories
-                </button>
+                </a>
+                
 
                 <a
                   className="text-gray-600 hover:text-blue-600 pb-2 transition-colors"
@@ -533,7 +618,114 @@ const handleLogout = async () => {
   />
 )}
 
+    <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    <FollowRelationsModal isOpen={isSuggestOpen} onClose={() => setIsSuggestOpen(false)} userId={profile._id}/>
+
+
+{isNotificationsOpen && (
+  <div className="absolute top-14 right-4 bg-white border shadow-lg w-[430px] h-[600px] overflow-y-auto rounded-xl z-50 p-4">
+    <div className="flex justify-between items-center mb-2">
+      <h3 className="font-semibold text-gray-800">Notifications</h3>
+      <button
+        onClick={() => setIsNotificationsOpen(false)}
+        className="text-sm text-gray-500 hover:text-red-500"
+      >
+        ✕
+      </button>
     </div>
+
+    {notifications.length === 0 ? (
+      <p className="text-gray-500">Aucune notification</p>
+    ) : (
+      notifications.map((notif) => (
+        <div
+          key={notif._id}
+          className={`p-3 mb-2 rounded flex justify-between items-center ${
+            notif.isRead ? 'bg-gray-100' : 'bg-blue-50'
+          }`}
+        >
+          <div className="flex items-center gap-2 text-sm text-gray-700">
+            {notif.type === 'follow' && (
+              <>
+                <UserPlus className="w-4 h-4 text-green-600" />
+                <span>
+                  <strong>{notif.sender?.nom}</strong> vous a suivi.
+                </span>
+              </>
+            )}
+
+            {notif.type === 'unfollow' && (
+              <>
+                <UserMinus className="w-4 h-4 text-red-600" />
+                <span>
+                  <strong>{notif.sender?.nom}</strong> vous a désabonné.
+                </span>
+              </>
+            )}
+
+             {notif.type === 'post' && (
+    <>
+      <Bell className="w-4 h-4 text-blue-600" />
+      <span>
+        <strong>{notif.sender?.nom}</strong> a publié un nouveau post.
+      </span>
+    </>
+  )}
+
+  {notif.type === 'comment' && (
+  <div className="flex items-center gap-2 text-sm text-gray-700">
+    <MessageSquare className="w-4 h-4 text-green-600" />
+    <span>
+      <strong>{notif.sender?.nom}</strong> a commenté votre post.
+    </span>
+  </div>
+)}
+
+{notif.type === 'like' && (
+  <div className="flex items-center gap-2 text-sm text-gray-700">
+    <Heart className="w-4 h-4 text-red-500" />
+    <span>
+      <strong>{notif.sender?.nom}</strong> a liké votre post.
+    </span>
+  </div>
+)}
+
+{notif.type === 'message' && (
+  <div className="flex items-center gap-2 text-sm text-gray-700">
+    <MessageCircle className="w-4 h-4 text-blue-500" />
+    <span>
+      <strong>{notif.sender?.nom}</strong> a envoye un message .
+    </span>
+  </div>
+)}
+
+{notif.type === 'partage' && (
+  <div className="flex items-center gap-2 text-sm text-gray-700">
+    <MessageCircle className="w-4 h-4 text-blue-500" />
+    <span>
+      <strong>{notif.sender?.nom}</strong> a partage votre post .
+    </span>
+  </div>
+)}
+  
+          </div>
+
+          <button
+            onClick={() => handleDeleteNotification(notif._id)}
+            className="text-gray-400 hover:text-red-500 text-sm"
+            title="Supprimer"
+          >
+            ✕
+          </button>
+        </div>
+      ))
+    )}
+  </div>
+)}
+
+
+    </div>
+    
     
   );
 };

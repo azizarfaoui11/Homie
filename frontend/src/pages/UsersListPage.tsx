@@ -9,12 +9,19 @@ export default function UsersListPage() {
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+ // const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
+  
   useEffect(() => {
-    api.getusers().then(res => {
-      setUsers(res.data.filter((u: any) => u._id !== currentUser.id));
-    });
+    const fetchFriends = async () => {
+      try {
+        const res = await api.getfriends();
+        setUsers(res.data);
+      } catch (err) {
+        console.error('Erreur chargement événements', err);
+      }
+    };
+    fetchFriends();
   }, []);
 
   return (

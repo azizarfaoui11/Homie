@@ -38,7 +38,7 @@ export default function SuggestedUsers() {
                   <p className="text-sm text-gray-500">@{user.username || user.nom.toLowerCase()}</p>
                 </div>
               </div>
-              <FollowButton targetId={user._id} />
+              <FollowButton targetId={user._id} currentUserId={''} />
             </div>
           ))
         )}
