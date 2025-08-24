@@ -36,7 +36,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/messages", messageRoutes);
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static('/app/uploads'));
 app.use("/api/user",userRoutes);
 app.use("/api/events",eventRoutes);
 app.use("/api/chat",chatRoutes);
