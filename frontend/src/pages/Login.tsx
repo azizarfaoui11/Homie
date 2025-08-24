@@ -148,9 +148,8 @@ const Login = () => {
                   </div>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                  ut lorem vehicula, tempor lorem at, tempor lorem at porta
-                  vehicula.
+                                   Rejoins la communauté Homie et connecte-toi avec ceux qui partagent ta vibe
+
                 </p>
               </div>
 
