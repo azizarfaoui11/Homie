@@ -29,7 +29,7 @@ export default function SuggestedUsers() {
             <div key={user._id} className="flex items-center justify-between p-4 border rounded-xl">
               <div className="flex items-center gap-3">
                 <img
-                  src={user.avatar ? `http://localhost:5000/uploads/${user.avatar}` : 'https://placehold.co/50x50'}
+                  src={user.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${user.avatar}` : 'https://placehold.co/50x50'}
                   className="w-12 h-12 rounded-full"
                   alt="avatar"
                 />

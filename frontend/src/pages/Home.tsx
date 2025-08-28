@@ -390,7 +390,7 @@ const handleDeleteNotification = async (id: string) => {
               <div className="h-32 bg-green-100 rounded-lg relative overflow-hidden flex items-center justify-center text-gray-500">
                 {/* Replaced generic div with placeholder image for map */}
                { ev.image && (
-          <img src={`http://localhost:5000/uploads/${ev.image}`} className="w-full h-48 object-cover" />
+          <img src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${ev.image}`} className="w-full h-48 object-cover" />
         )} 
                 
               </div>
@@ -424,7 +424,7 @@ const handleDeleteNotification = async (id: string) => {
     <div className="flex items-center gap-3">
      <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
     <img
-                src={profile.avatar ? `http://localhost:5000/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
+                src={profile.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
                 alt="Cover"
               />               
                   </Avatar>
@@ -483,7 +483,7 @@ const handleDeleteNotification = async (id: string) => {
               <div className="flex items-center gap-3">
                 <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
     <img
-                src={post.author?.avatar ? `http://localhost:5000/uploads/${post.author?.avatar}` : 'https://placehold.co/800x200'}
+                src={post.author?.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${post.author?.avatar}` : 'https://placehold.co/800x200'}
                 alt="Cover"
               />               
                   </Avatar>
@@ -515,7 +515,7 @@ const handleDeleteNotification = async (id: string) => {
               <div className="flex items-center gap-3">
                 <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
     <img
-                src={post.sharedFrom?.author ? `http://localhost:5000/uploads/${post.sharedFrom?.author?.avatar}` : 'https://placehold.co/800x200'}
+                src={post.sharedFrom?.author ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${post.sharedFrom?.author?.avatar}` : 'https://placehold.co/800x200'}
                 alt="Cover"
               />               
                   </Avatar>
@@ -531,7 +531,7 @@ const handleDeleteNotification = async (id: string) => {
 
         {post.sharedFrom?.image && (
           <img
-            src={`http://localhost:5000/uploads/${post.sharedFrom.image}`}
+            src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${post.sharedFrom.image}`}
             alt="shared"
             className="mt-2 rounded w-full max-h-60 object-cover"
           />
@@ -548,7 +548,7 @@ const handleDeleteNotification = async (id: string) => {
 
       {post.image && (
         <img
-          src={`http://localhost:5000/uploads/${post.image}`}
+          src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${post.image}`}
           alt="post"
           className="w-full h-40 object-cover rounded"
         />

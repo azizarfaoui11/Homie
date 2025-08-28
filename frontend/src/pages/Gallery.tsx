@@ -30,7 +30,7 @@ export default function Gallery() {
         {avatar && (
           <Card className="overflow-hidden shadow-md">
             <img
-              src={`http://localhost:5000/uploads/${avatar}`}
+              src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${avatar}`}
               alt="Avatar"
               className="w-full h-48 object-cover"
             />
@@ -41,7 +41,7 @@ export default function Gallery() {
         {coverPhoto && (
           <Card className="overflow-hidden shadow-md">
             <img
-              src={`http://localhost:5000/uploads/${coverPhoto}`}
+              src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${coverPhoto}`}
               alt="Photo de couverture"
               className="w-full h-48 object-cover"
             />
@@ -52,7 +52,7 @@ export default function Gallery() {
         {postImages.map((img, index) => (
           <Card key={index} className="overflow-hidden shadow-md">
             <img
-              src={`http://localhost:5000/uploads/${img}`}
+              src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${img}`}
               alt={`Post ${index}`}
               className="w-full h-48 object-cover"
             />

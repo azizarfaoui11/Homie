@@ -11,7 +11,7 @@ export default function Geminimodal()  {
 
   //const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  const API_URL = "http://localhost:5000/api";
+  const API_URL = "https://homie.azizarfaoui.ip-ddns.com/api";
 
   // 🎨 Couleurs personnalisées
   const roleColors = {

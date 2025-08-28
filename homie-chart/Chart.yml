@@ -1,0 +1,6 @@
+apiVersion: v2
+name: homie
+description: Helm chart for Homie app (backend + frontend) using AWS Secrets Manager via External Secrets Operator
+type: application
+version: 0.1.0
+appVersion: "1.0"

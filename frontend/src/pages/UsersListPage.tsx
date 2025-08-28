@@ -37,7 +37,7 @@ export default function UsersListPage() {
               <div className="flex items-center gap-3">
              <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
     <img
-                src={user.avatar ? `http://localhost:5000/uploads/${user.avatar}` : 'https://placehold.co/800x200'}
+                src={user.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${user.avatar}` : 'https://placehold.co/800x200'}
                 alt="Cover"
               />               
                   </Avatar>

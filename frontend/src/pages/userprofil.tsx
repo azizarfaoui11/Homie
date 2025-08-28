@@ -35,13 +35,13 @@ export default function UserProfile() {
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <div className="relative">
           <img
-            src={profile.coverPhoto ? `http://localhost:5000/uploads/${profile.coverPhoto}` : 'https://placehold.co/800x200'}
+            src={profile.coverPhoto ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${profile.coverPhoto}` : 'https://placehold.co/800x200'}
             alt="Cover"
             className="w-full h-48 object-cover"
           />
           <div className="absolute -bottom-10 left-6 flex items-center gap-4">
             <img
-              src={profile.avatar ? `http://localhost:5000/uploads/${profile.avatar}` : 'https://placehold.co/100x100'}
+              src={profile.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${profile.avatar}` : 'https://placehold.co/100x100'}
               alt="Avatar"
               className="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover"
             />

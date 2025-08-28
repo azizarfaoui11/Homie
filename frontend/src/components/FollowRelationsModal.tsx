@@ -40,7 +40,7 @@ useEffect(() => {
           <li key={user._id} className="flex items-center justify-between gap-3 p-2 rounded hover:bg-gray-50">
             <div className="flex items-center gap-3">
               <img
-                src={user.avatar ? `http://localhost:5000/uploads/${user.avatar}` : 'https://placehold.co/40x40'}
+                src={user.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${user.avatar}` : 'https://placehold.co/40x40'}
                 className="w-10 h-10 rounded-full object-cover"
                 alt="avatar"
               />

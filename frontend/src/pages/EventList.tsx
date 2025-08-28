@@ -36,7 +36,7 @@ export default function EventsList() {
                       <div className="h-32 bg-white-100 rounded-lg relative overflow-hidden flex items-center justify-center text-gray-500">
                         {/* Replaced generic div with placeholder image for map */}
  {event.image && (
-          <img src={`http://localhost:5000/uploads/${event.image}`} className="w-full h-48 object-cover" />
+          <img src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${event.image}`} className="w-full h-48 object-cover" />
         )}                        <div className="absolute inset-0 bg-white-200 opacity-50"></div>
                         <button 
                           className="absolute bottom-2 left-2 bg-white rounded px-2 py-1 text-xs shadow-md flex items-center gap-1 hover:bg-gray-50 transition-colors"

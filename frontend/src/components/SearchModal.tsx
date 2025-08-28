@@ -69,7 +69,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     <img
                       src={
                         user.avatar
-                          ? `http://localhost:5000/uploads/${user.avatar}`
+                          ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${user.avatar}`
                           : "https://placehold.co/100x100"
                       }
                       alt={user.nom}

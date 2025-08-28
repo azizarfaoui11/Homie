@@ -89,7 +89,7 @@ export default function CommentSectionvideo({ videoId }: CommentSectionProps) {
           <div className="flex items-start gap-3">
             <Avatar className="w-8 h-8 border border-gray-300">
                  <img
-                src={comment.author.avatar ? `http://localhost:5000/uploads/${comment.author.avatar}` : 'https://placehold.co/800x200'}
+                src={comment.author.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${comment.author.avatar}` : 'https://placehold.co/800x200'}
                 alt="Cover"
               />  
                 {comment.author?.nom?.[0]?.toUpperCase()}

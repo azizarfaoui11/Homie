@@ -271,7 +271,7 @@ useEffect(() => {
       {/* Header Banner */}
       <div className="relative">
          <img
-            src={profile.coverPhoto ? `http://localhost:5000/uploads/${profile.coverPhoto}` : 'https://placehold.co/800x200'}
+            src={profile.coverPhoto ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${profile.coverPhoto}` : 'https://placehold.co/800x200'}
             alt="Cover"
             className="w-full h-80 object-cover"
           />
@@ -282,7 +282,7 @@ useEffect(() => {
             <div className="flex flex-col lg:flex-row items-center gap-6">
               <Avatar className="w-40 h-40 border-4 border-white shadow-lg">
 <img
-            src={profile.avatar ? `http://localhost:5000/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
+            src={profile.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
             alt="Cover"
             className="w-full h-48 object-cover"
           />               
@@ -412,7 +412,7 @@ useEffect(() => {
                  {postImages.map((img, index) => (
           <Card key={index} className="overflow-hidden shadow-md">
             <img
-              src={`http://localhost:5000/uploads/${img}`}
+              src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${img}`}
               alt={`Post ${index}`}
               className="aspect-square rounded-lg overflow-hidden cursor-pointer"
             />
@@ -465,7 +465,7 @@ useEffect(() => {
                       className={`w-20 h-20 mx-auto mb-2 `}
                     >
                         <img
-              src={friend?.avatar ? `http://localhost:5000/uploads/${friend?.avatar}` : 'https://placehold.co/60x60'}
+              src={friend?.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${friend?.avatar}` : 'https://placehold.co/60x60'}
               alt="Avatar"
             />
                     </Avatar>
@@ -488,7 +488,7 @@ useEffect(() => {
               <div className="flex items-center gap-3">
                  <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
 <img
-            src={profile.avatar ? `http://localhost:5000/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
+            src={profile.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
             alt="Cover"
           />               
               </Avatar>
@@ -580,7 +580,7 @@ useEffect(() => {
                 <div className="flex items-center gap-3">
                    <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
 <img
-            src={profile.avatar ? `http://localhost:5000/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
+            src={profile.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${profile.avatar}` : 'https://placehold.co/800x200'}
             alt="Cover"
           />               
               </Avatar>
@@ -622,7 +622,7 @@ useEffect(() => {
               <div className="flex items-center gap-3">
                 <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
     <img
-                src={post.sharedFrom?.author ? `http://localhost:5000/uploads/${post.sharedFrom?.author?.avatar}` : 'https://placehold.co/800x200'}
+                src={post.sharedFrom?.author ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${post.sharedFrom?.author?.avatar}` : 'https://placehold.co/800x200'}
                 alt="Cover"
               />               
                   </Avatar>
@@ -638,7 +638,7 @@ useEffect(() => {
 
         {post.sharedFrom?.image && (
           <img
-            src={`http://localhost:5000/uploads/${post.sharedFrom.image}`}
+            src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${post.sharedFrom.image}`}
             alt="shared"
             className="mt-2 rounded w-full max-h-60 object-cover"
           />
@@ -655,7 +655,7 @@ useEffect(() => {
 
       {post.image && (
         <img
-          src={`http://localhost:5000/uploads/${post.image}`}
+          src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${post.image}`}
           alt="post"
           className="w-full h-40 object-cover rounded"
         />

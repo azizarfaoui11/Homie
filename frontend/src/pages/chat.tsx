@@ -82,7 +82,7 @@ const handleSend=()=>{
     {/* Avatar */}
     <div className="relative">
       <img
-        src={`http://localhost:5000/uploads/${recipient.avatar}`}
+        src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${recipient.avatar}`}
         alt="avatar"
         className="w-10 h-10 rounded-full object-cover border"
       />

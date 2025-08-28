@@ -100,7 +100,7 @@ export default function EditProfile({ onClose }: Props) {
           {/* Cover Photo */}
           <div className="relative h-48 bg-gray-100 rounded-lg overflow-hidden">
             <img
-              src={user.coverPhoto ? `http://localhost:5000/uploads/${user.coverPhoto}` : 'https://placehold.co/800x200'}
+              src={user.coverPhoto ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${user.coverPhoto}` : 'https://placehold.co/800x200'}
               alt="Cover"
               className="w-full h-full object-cover"
             />
@@ -114,7 +114,7 @@ export default function EditProfile({ onClose }: Props) {
           <div className="flex items-center space-x-4">
             <div className="relative w-24 h-24">
               <img
-                src={user.avatar ? `http://localhost:5000/uploads/${user.avatar}` : 'https://placehold.co/800x200'}
+                src={user.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${user.avatar}` : 'https://placehold.co/800x200'}
                 alt="Avatar"
                 className="rounded-full w-24 h-24 object-cover border"
               />

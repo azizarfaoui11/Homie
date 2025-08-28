@@ -42,7 +42,7 @@ const navigate= useNavigate();
       {/* Colonne gauche : Événement */}
       <div className="lg:col-span-2 space-y-4">
         <img
-          src={`http://localhost:5000/uploads/${event.image}`}
+          src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${event.image}`}
           className="w-full h-64 object-cover rounded-2xl shadow"
           alt="Event"
         />
@@ -83,7 +83,7 @@ const navigate= useNavigate();
             <li key={index} className="flex items-center gap-3">
               {user.avatar && (
                 <img
-                  src={`http://localhost:5000/uploads/${user.avatar}`}
+                  src={`https://homie.azizarfaoui.ip-ddns.com/uploads/${user.avatar}`}
                   alt="avatar"
                   className="w-9 h-9 rounded-full object-cover border"
                 />

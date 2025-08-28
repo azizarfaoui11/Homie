@@ -117,7 +117,7 @@ return (
                     {video.userId.avatar ? (
                       <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
     <img
-                src={video.userId.avatar ? `http://localhost:5000/uploads/${video.userId.avatar}` : 'https://placehold.co/800x200'}
+                src={video.userId.avatar ? `https://homie.azizarfaoui.ip-ddns.com/uploads/${video.userId.avatar}` : 'https://placehold.co/800x200'}
                 alt="Cover"
               />               
                   </Avatar>
