@@ -71,4 +71,5 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add homie-chart/values.yaml
           git commit -m "Update images to tag ${{ env.IMAGE_TAG }}"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/azizarfaoui11/Homie-GitOps.git
           git push origin main
