@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #  Checkout
+      # Checkout app repo
       - name: Checkout code
         uses: actions/checkout@v3
 
-      #  Set unique image tag
+      # Set unique image tag (short commit SHA)
       - name: Set image tag
         run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
@@ -41,10 +41,34 @@ jobs:
           docker build --no-cache -t ${{ secrets.ECR_BACKEND_URI }}:${{ env.IMAGE_TAG }} ./backend
           docker push ${{ secrets.ECR_BACKEND_URI }}:${{ env.IMAGE_TAG }}
 
-      #  Build & push frontend
+      # Build & push frontend
       - name: Build and Push frontend image
         run: |
           docker build --no-cache -t ${{ secrets.ECR_FRONTEND_URI }}:${{ env.IMAGE_TAG }} ./frontend
           docker push ${{ secrets.ECR_FRONTEND_URI }}:${{ env.IMAGE_TAG }}
 
- 
+  update-helm-values:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Helm repo
+        uses: actions/checkout@v3
+        with:
+          repository: azizarfaoui11/Homie-GitOps  
+          token: ${{ secrets.PAT_TOKEN }} 
+          ref: main
+
+      - name: Update values.yaml with new image tags
+        run: |
+          sed -i "s|image:.*backend:.*|image: \"${{ secrets.ECR_BACKEND_URI }}:${{ env.IMAGE_TAG }}\"|" homie-chart/values.yaml
+          sed -i "s|image:.*frontend:.*|image: \"${{ secrets.ECR_FRONTEND_URI }}:${{ env.IMAGE_TAG }}\"|" homie-chart/values.yaml
+
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add homie-chart/values.yaml
+          git commit -m "Update images to tag ${{ env.IMAGE_TAG }}"
+          git push origin main
