@@ -10,17 +10,18 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    outputs:
+      IMAGE_TAG: ${{ steps.set-tag.outputs.IMAGE_TAG }}
     steps:
-      # Checkout app repo
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set unique image tag (short commit SHA)
       - name: Set image tag
+        id: set-tag
         run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        # expose output for downstream job
+        run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      # Configure AWS
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -28,20 +29,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Login to ECR
       - name: Login to Amazon ECR
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
           docker login --username AWS --password-stdin \
           ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-      # Build & push backend
       - name: Build and Push backend image
         run: |
           docker build --no-cache -t ${{ secrets.ECR_BACKEND_URI }}:${{ env.IMAGE_TAG }} ./backend
           docker push ${{ secrets.ECR_BACKEND_URI }}:${{ env.IMAGE_TAG }}
 
-      # Build & push frontend
       - name: Build and Push frontend image
         run: |
           docker build --no-cache -t ${{ secrets.ECR_FRONTEND_URI }}:${{ env.IMAGE_TAG }} ./frontend
@@ -50,7 +48,8 @@ jobs:
   update-helm-values:
     needs: build-and-deploy
     runs-on: ubuntu-latest
-
+    env:
+      IMAGE_TAG: ${{ needs.build-and-deploy.outputs.IMAGE_TAG }}
     steps:
       - name: Checkout Helm repo
         uses: actions/checkout@v3
@@ -61,15 +60,14 @@ jobs:
 
       - name: Update values.yaml with new image tags
         run: |
-          sed -i "s|image:.*backend:.*|image: \"${{ secrets.ECR_BACKEND_URI }}:${{ env.IMAGE_TAG }}\"|" homie-chart/values.yaml
-          sed -i "s|image:.*frontend:.*|image: \"${{ secrets.ECR_FRONTEND_URI }}:${{ env.IMAGE_TAG }}\"|" homie-chart/values.yaml
-
+          sed -i "s|image:.*backend:.*|image: \"${{ secrets.ECR_BACKEND_URI }}:${IMAGE_TAG}\"|" homie-chart/values.yaml
+          sed -i "s|image:.*frontend:.*|image: \"${{ secrets.ECR_FRONTEND_URI }}:${IMAGE_TAG}\"|" homie-chart/values.yaml
 
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add homie-chart/values.yaml
-          git commit -m "Update images to tag ${{ env.IMAGE_TAG }}"
+          git commit -m "Update images to tag $IMAGE_TAG"
           git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/azizarfaoui11/Homie-GitOps.git
           git push origin main
