@@ -5,3 +5,4 @@ deployargocdtoEKS
 
 deploy version 2.0
 deploy version3.0
+deplpy version4.0
