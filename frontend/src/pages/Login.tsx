@@ -105,7 +105,7 @@ const Login = () => {
                 </div>
                 {/* Hello speech bubble */}
                 <div className="absolute -top-4 -left-8 bg-orange-400 text-orange-900 px-4 py-2 rounded-full text-sm font-semibold transform -rotate-12">
-                  Hello Homie ! 
+                  Hello Homie / test portfolio !!!! 
                 </div>
               </div>
               <h2 className="text-2xl lg:text-3xl font-bold mb-4">
